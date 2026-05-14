@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="add-task-section">
+    <form action="{{ url_for('add') }}" method="POST" class="add-task-form">
+        <div class="input-wrapper">
+            <i class='bx bx-plus-circle'></i>
+            <input type="text" name="title" placeholder="Add a new task..." required autocomplete="off">
+        </div>
+        <button type="submit" class="btn-primary">Add Task</button>
+    </form>
+</div>
+
+<div class="task-list-section">
+    {% if tasks %}
+        <ul class="task-list">
+            {% for task in tasks %}
+            <li class="task-item">
+                <i class='bx bx-check-square task-icon'></i>
+                <div class="task-content">
+                    <span class="task-title">{{ task.title }}</span>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class='bx bx-check-double'></i>
+            </div>
+            <p>Your list is empty!</p>
+            <span>Add a new task above to get started.</span>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
