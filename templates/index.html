@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily To-Do List</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>My Tasks</h1>
+            <p class="subtitle">Click on a task to edit its content.</p>
+        </header>
+
+        <ul class="task-list">
+            {% for task in tasks %}
+            <li class="task-item" data-id="{{ task.id }}">
+                <label class="checkbox-wrapper">
+                    <input type="checkbox" {% if task.is_completed %}checked{% endif %} disabled>
+                    <span class="checkmark"></span>
+                </label>
+                
+                <div class="task-content">
+                    <span class="task-title" title="點擊以編輯">{{ task.title }}</span>
+                    <input type="text" class="task-edit-input hidden" value="{{ task.title }}">
+                </div>
+            </li>
+            {% else %}
+            <li class="empty-state">No tasks yet. Enjoy your day!</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
