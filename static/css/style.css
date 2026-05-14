@@ -10,9 +10,6 @@
     --text-muted: #9ca3af;
     --primary-color: #6366f1;
     --primary-hover: #4f46e5;
-    --danger-color: #ef4444;
-    --danger-hover: #dc2626;
-    --success-color: #10b981;
     --border-color: #e5e7eb;
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -211,74 +208,20 @@ header {
     transform: scale(1.01);
 }
 
+.task-icon {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+}
+
 .task-content {
     flex: 1;
 }
 
-.edit-input {
-    width: 100%;
-    background: transparent;
-    border: none;
-    color: var(--text-primary);
+.task-title {
     font-size: 1rem;
     font-weight: 500;
-    padding: 0.25rem;
-    border-radius: 4px;
-}
-
-.edit-input:focus {
-    background-color: var(--bg-app);
-    box-shadow: 0 0 0 2px var(--primary-color);
-}
-
-/* Completion States */
-.task-item.completed {
-    opacity: 0.6;
-    background-color: transparent;
-    border-style: dashed;
-}
-
-.task-item.completed .edit-input {
-    text-decoration: line-through;
-    color: var(--text-muted);
-}
-
-.task-item.completed .toggle-btn {
-    color: var(--success-color);
-}
-
-/* Action Buttons */
-.toggle-btn {
-    color: var(--text-muted);
-    font-size: 1.5rem;
-    display: flex;
-    align-items: center;
-    transition: var(--transition);
-}
-
-.toggle-btn:hover {
-    color: var(--primary-color);
-    transform: scale(1.1);
-}
-
-.delete-btn {
-    color: var(--text-muted);
-    font-size: 1.25rem;
-    display: flex;
-    align-items: center;
-    padding: 0.5rem;
-    border-radius: 8px;
-    transition: var(--transition);
-    opacity: 0;
-}
-
-.task-item:hover .delete-btn {
-    opacity: 1;
-}
-
-.delete-btn:hover {
-    color: var(--danger-color);
-    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--text-primary);
+    word-break: break-all;
 }
 
 /* =========================================
@@ -328,9 +271,5 @@ header {
     
     .btn-primary {
         padding: 1rem;
-    }
-
-    .task-item .delete-btn {
-        opacity: 1;
     }
 }

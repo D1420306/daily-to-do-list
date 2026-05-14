@@ -31,28 +31,3 @@ def add_task(title):
     conn.execute('INSERT INTO tasks (title) VALUES (?)', (title,))
     conn.commit()
     conn.close()
-
-def toggle_task_status(task_id):
-    """切換任務的完成狀態 (0 -> 1, 1 -> 0)"""
-    conn = get_db_connection()
-    # 先取得目前的狀態
-    task = conn.execute('SELECT is_completed FROM tasks WHERE id = ?', (task_id,)).fetchone()
-    if task:
-        new_status = 0 if task['is_completed'] else 1
-        conn.execute('UPDATE tasks SET is_completed = ? WHERE id = ?', (new_status, task_id))
-        conn.commit()
-    conn.close()
-
-def delete_task(task_id):
-    """刪除任務"""
-    conn = get_db_connection()
-    conn.execute('DELETE FROM tasks WHERE id = ?', (task_id,))
-    conn.commit()
-    conn.close()
-
-def update_task_title(task_id, new_title):
-    """更新任務標題"""
-    conn = get_db_connection()
-    conn.execute('UPDATE tasks SET title = ? WHERE id = ?', (new_title, task_id))
-    conn.commit()
-    conn.close()

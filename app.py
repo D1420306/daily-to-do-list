@@ -27,34 +27,5 @@ def add():
         database.add_task(title.strip())
     return redirect(url_for('index'))
 
-@app.route('/toggle/<int:task_id>', methods=['POST'])
-def toggle(task_id):
-    """
-    切換任務完成狀態
-    根據 task_id 切換 is_completed 欄位，完成後重導向回首頁
-    """
-    database.toggle_task_status(task_id)
-    return redirect(url_for('index'))
-
-@app.route('/delete/<int:task_id>', methods=['POST'])
-def delete(task_id):
-    """
-    刪除任務
-    根據 task_id 刪除該筆資料，完成後重導向回首頁
-    """
-    database.delete_task(task_id)
-    return redirect(url_for('index'))
-
-@app.route('/edit/<int:task_id>', methods=['POST'])
-def edit(task_id):
-    """
-    編輯任務
-    根據 task_id 更新 title 欄位，完成後重導向回首頁
-    """
-    new_title = request.form.get('new_title')
-    if new_title and new_title.strip():
-        database.update_task_title(task_id, new_title.strip())
-    return redirect(url_for('index'))
-
 if __name__ == '__main__':
     app.run(debug=True)

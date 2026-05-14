@@ -12,16 +12,6 @@ flowchart LR
     
     Action -->|輸入文字並送出| Add[新增任務]
     Add -->|重新載入| Home
-    
-    Action -->|點擊打勾/取消| Toggle[切換完成狀態]
-    Toggle -->|重新載入| Home
-    
-    Action -->|點擊刪除| Delete[刪除任務]
-    Delete -->|重新載入| Home
-    
-    Action -->|點擊編輯| Edit[進入編輯模式]
-    Edit -->|送出修改| Update[更新任務]
-    Update -->|重新載入| Home
 ```
 
 ## 2. 系統序列圖 (Sequence Diagram)
@@ -62,8 +52,3 @@ sequenceDiagram
 | --- | --- | --- | --- |
 | 檢視任務清單 | GET | `/` | 載入首頁並顯示所有任務 |
 | 新增任務 | POST | `/add` | 接收表單資料，寫入後重導向回首頁 |
-| 切換完成狀態 | POST | `/toggle/<int:task_id>` | 切換任務的完成/未完成狀態，然後重導向回首頁 |
-| 刪除任務 | POST | `/delete/<int:task_id>` | 刪除特定任務，然後重導向回首頁 |
-| 編輯任務 | POST | `/edit/<int:task_id>` | 更新特定任務的標題文字，然後重導向回首頁 |
-
-> 註：在傳統的 HTML 表單中，我們只能使用 GET 或 POST 方法。因此上述操作（即使是刪除或更新）我們也一律使用 POST 方法配合特定的 URL 路徑來達成。
