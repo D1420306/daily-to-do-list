@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="add-task-section">
+    <form action="{{ url_for('add') }}" method="POST" class="add-task-form">
+        <div class="input-wrapper">
+            <i class='bx bx-plus-circle'></i>
+            <input type="text" name="title" placeholder="Add a new task..." required autocomplete="off">
+        </div>
+        <button type="submit" class="btn-primary">Add Task</button>
+    </form>
+</div>
+
+<div class="task-list-section">
+    {% if tasks %}
+        <ul class="task-list">
+            {% for task in tasks %}
+            <li class="task-item {% if task.is_completed %}completed{% endif %}">
+                
+                <form action="{{ url_for('toggle', task_id=task.id) }}" method="POST" class="toggle-form">
+                    <button type="submit" class="toggle-btn" title="Toggle status">
+                        {% if task.is_completed %}
+                            <i class='bx bxs-check-circle'></i>
+                        {% else %}
+                            <i class='bx bx-circle'></i>
+                        {% endif %}
+                    </button>
+                </form>
+
+                <div class="task-content">
+                    <form action="{{ url_for('edit', task_id=task.id) }}" method="POST" class="edit-form">
+                        <input type="text" name="new_title" value="{{ task.title }}" class="edit-input" required {% if task.is_completed %}readonly{% endif %}>
+                    </form>
+                </div>
+
+                <form action="{{ url_for('delete', task_id=task.id) }}" method="POST" class="delete-form">
+                    <button type="submit" class="delete-btn" title="Delete task">
+                        <i class='bx bx-trash'></i>
+                    </button>
+                </form>
+                
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class='bx bx-check-double'></i>
+            </div>
+            <p>You're all caught up!</p>
+            <span>Enjoy your free time or add a new task above.</span>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
