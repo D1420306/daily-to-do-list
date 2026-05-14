@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Add Task Form -->
+<form action="{{ url_for('main.add_task') }}" method="POST" class="add-task-form">
+    <input type="text" name="title" class="input-field" placeholder="今天要做什麼呢？" autocomplete="off" required autofocus>
+    <button type="submit" class="btn btn-primary">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        新增
+    </button>
+</form>
+
+<!-- Incomplete Tasks -->
+<div class="task-section">
+    <div class="section-header">
+        <h2>未完成 ({{ incomplete_tasks|length }})</h2>
+    </div>
+    
+    {% if incomplete_tasks %}
+        <ul class="task-list">
+            {% for task in incomplete_tasks %}
+                <li class="task-item">
+                    <!-- Toggle Status -->
+                    <form action="{{ url_for('main.toggle_task', task_id=task.id) }}" method="POST" class="task-checkbox-form">
+                        <input type="checkbox" class="checkbox-custom" onchange="this.form.submit()">
+                    </form>
+                    
+                    <!-- Task Text -->
+                    <div class="task-text" id="task-text-{{ task.id }}">
+                        {{ task.title }}
+                    </div>
+                    
+                    <!-- Edit Action (JavaScript to toggle form could be added, but for simple MVP we just show text. Let's add inline edit later if needed, or simple delete for now) -->
+                    
+                    <!-- Delete Form -->
+                    <form action="{{ url_for('main.delete_task', task_id=task.id) }}" method="POST" class="task-delete-form">
+                        <button type="submit" class="btn-icon danger" title="刪除">
+                            <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                        </button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div class="empty-state">目前沒有未完成的任務，太棒了！</div>
+    {% endif %}
+</div>
+
+<!-- Completed Tasks -->
+{% if completed_tasks %}
+<div class="task-section">
+    <div class="section-header">
+        <h2>已完成 ({{ completed_tasks|length }})</h2>
+        <form action="{{ url_for('main.clear_completed') }}" method="POST">
+            <button type="submit" class="btn-text">清理已完成</button>
+        </form>
+    </div>
+    
+    <ul class="task-list">
+        {% for task in completed_tasks %}
+            <li class="task-item completed">
+                <form action="{{ url_for('main.toggle_task', task_id=task.id) }}" method="POST" class="task-checkbox-form">
+                    <input type="checkbox" class="checkbox-custom" checked onchange="this.form.submit()">
+                </form>
+                
+                <div class="task-text">
+                    {{ task.title }}
+                </div>
+                
+                <form action="{{ url_for('main.delete_task', task_id=task.id) }}" method="POST" class="task-delete-form">
+                    <button type="submit" class="btn-icon danger" title="刪除">
+                        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    </button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{% endblock %}
