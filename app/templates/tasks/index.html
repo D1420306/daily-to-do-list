@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}任務列表 — 每日代辦{% endblock %}
+
+{% block content %}
+<!-- Stats Bar -->
+<div class="stats-bar">
+  <div class="stat-card">
+    <div class="stat-num">{{ total }}</div>
+    <div class="stat-label">全部任務</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num" style="color:var(--color-low)">{{ done }}</div>
+    <div class="stat-label">已完成</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num" style="color:var(--color-high)">{{ total - done }}</div>
+    <div class="stat-label">待完成</div>
+  </div>
+</div>
+
+<!-- Progress Bar -->
+{% if total > 0 %}
+<div class="progress-wrap">
+  <div class="progress-label">
+    <span>完成進度</span>
+    <span>{{ done }} / {{ total }}</span>
+  </div>
+  <div class="progress-bar-bg">
+    <div class="progress-bar-fill" style="width: {{ (done / total * 100)|round|int }}%"></div>
+  </div>
+</div>
+{% endif %}
+
+<!-- 優先順序圖例 -->
+<div class="priority-legend">
+  <span class="legend-item">
+    <span class="legend-bar legend-high"></span>高優先 — 緊急
+  </span>
+  <span class="legend-item">
+    <span class="legend-bar legend-medium"></span>中優先 — 重要
+  </span>
+  <span class="legend-item">
+    <span class="legend-bar legend-low"></span>低優先 — 一般
+  </span>
+</div>
+
+<!-- Section Title -->
+<div class="section-title">TODAY'S TASKS</div>
+
+<!-- Task List -->
+{% if tasks %}
+<div class="task-list" id="task-list">
+  {% for task in tasks %}
+  <div class="task-card priority-{{ task['priority'] }} {% if task['is_done'] %}done{% endif %}">
+
+    <!-- Task Body -->
+    <div class="task-body {% if task['is_done'] %}task-done{% endif %}">
+      <div class="task-title">{{ task['title'] }}</div>
+      {% if task['description'] %}
+        <div class="task-desc">{{ task['description'] }}</div>
+      {% endif %}
+      <div class="task-meta">
+        <!-- 優先順序 Badge 標籤 -->
+        <span class="badge badge-{{ task['priority'] }}">
+          {{ priority_config[task['priority']]['label'] }} 優先
+        </span>
+        {% if task['due_date'] %}
+          <span class="due-date">📅 {{ task['due_date'] }}</span>
+        {% endif %}
+        {% if task['is_done'] %}
+          <span style="color:var(--color-low)">✔ 已完成</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Task Actions -->
+    <div class="task-actions">
+      <!-- 切換完成 -->
+      <form action="{{ url_for('tasks.toggle_task', task_id=task['id']) }}" method="POST">
+        <button type="submit"
+                class="btn btn-toggle {% if task['is_done'] %}is-done{% endif %}"
+                title="{{ '標記未完成' if task['is_done'] else '標記完成' }}">
+          {{ '↩ 復原' if task['is_done'] else '✔ 完成' }}
+        </button>
+      </form>
+      <!-- 編輯 -->
+      <a href="{{ url_for('tasks.edit_task', task_id=task['id']) }}" class="btn btn-edit">✏ 編輯</a>
+      <!-- 刪除 -->
+      <form action="{{ url_for('tasks.delete_task', task_id=task['id']) }}" method="POST"
+            onsubmit="return confirm('確定要刪除「{{ task['title'] }}」嗎？')">
+        <button type="submit" class="btn btn-delete">🗑 刪除</button>
+      </form>
+    </div>
+
+  </div>
+  {% endfor %}
+</div>
+
+{% else %}
+<!-- Empty State -->
+<div class="empty-state">
+  <div class="icon">📭</div>
+  <h3>目前沒有任何任務</h3>
+  <p>按右上角「＋ 新增任務」開始規劃你的一天！</p>
+</div>
+{% endif %}
+{% endblock %}

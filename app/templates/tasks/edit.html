@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}編輯任務 — 每日代辦{% endblock %}
+
+{% block content %}
+<div class="form-card">
+  <div class="form-title">✏ 編輯任務</div>
+
+  <form action="{{ url_for('tasks.update_task', task_id=task['id']) }}" method="POST">
+
+    <!-- 標題 -->
+    <div class="form-group">
+      <label for="title">任務標題 <span style="color:var(--color-high)">*</span></label>
+      <input type="text" id="title" name="title"
+             value="{{ task['title'] }}" required maxlength="120">
+    </div>
+
+    <!-- 描述 -->
+    <div class="form-group">
+      <label for="description">描述（選填）</label>
+      <textarea id="description" name="description">{{ task['description'] or '' }}</textarea>
+    </div>
+
+    <!-- 優先順序（預填現有值） -->
+    <div class="form-group">
+      <label>優先順序</label>
+      <div class="priority-selector">
+        <input type="radio" id="p-high"   name="priority" value="high"
+               {{ 'checked' if task['priority'] == 'high' }}>
+        <label class="priority-label" for="p-high">
+          <span class="priority-dot dot-high"></span>高 優先
+        </label>
+
+        <input type="radio" id="p-medium" name="priority" value="medium"
+               {{ 'checked' if task['priority'] == 'medium' }}>
+        <label class="priority-label" for="p-medium">
+          <span class="priority-dot dot-medium"></span>中 優先
+        </label>
+
+        <input type="radio" id="p-low"    name="priority" value="low"
+               {{ 'checked' if task['priority'] == 'low' }}>
+        <label class="priority-label" for="p-low">
+          <span class="priority-dot dot-low"></span>低 優先
+        </label>
+      </div>
+    </div>
+
+    <!-- 到期日 -->
+    <div class="form-group">
+      <label for="due_date">到期日（選填）</label>
+      <input type="date" id="due_date" name="due_date"
+             value="{{ task['due_date'] or '' }}">
+    </div>
+
+    <!-- 按鈕 -->
+    <div class="form-actions">
+      <button type="submit" class="btn-primary">💾 儲存變更</button>
+      <a href="{{ url_for('tasks.index') }}" class="btn-secondary">取消</a>
+    </div>
+
+  </form>
+</div>
+{% endblock %}

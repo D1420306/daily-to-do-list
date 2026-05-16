@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}新增任務 — 每日代辦{% endblock %}
+
+{% block content %}
+<div class="form-card">
+  <div class="form-title">＋ 新增任務</div>
+
+  <form action="{{ url_for('tasks.create_task') }}" method="POST">
+
+    <!-- 標題 -->
+    <div class="form-group">
+      <label for="title">任務標題 <span style="color:var(--color-high)">*</span></label>
+      <input type="text" id="title" name="title"
+             placeholder="輸入任務名稱…" required maxlength="120">
+    </div>
+
+    <!-- 描述 -->
+    <div class="form-group">
+      <label for="description">描述（選填）</label>
+      <textarea id="description" name="description"
+                placeholder="補充說明這個任務的細節…"></textarea>
+    </div>
+
+    <!-- 優先順序（核心功能：高/中/低 顏色標籤選擇器） -->
+    <div class="form-group">
+      <label>優先順序</label>
+      <div class="priority-selector">
+        <input type="radio" id="p-high"   name="priority" value="high">
+        <label class="priority-label" for="p-high">
+          <span class="priority-dot dot-high"></span>高 優先
+        </label>
+
+        <input type="radio" id="p-medium" name="priority" value="medium" checked>
+        <label class="priority-label" for="p-medium">
+          <span class="priority-dot dot-medium"></span>中 優先
+        </label>
+
+        <input type="radio" id="p-low"    name="priority" value="low">
+        <label class="priority-label" for="p-low">
+          <span class="priority-dot dot-low"></span>低 優先
+        </label>
+      </div>
+    </div>
+
+    <!-- 到期日 -->
+    <div class="form-group">
+      <label for="due_date">到期日（選填）</label>
+      <input type="date" id="due_date" name="due_date">
+    </div>
+
+    <!-- 按鈕 -->
+    <div class="form-actions">
+      <button type="submit" class="btn-primary">✔ 新增任務</button>
+      <a href="{{ url_for('tasks.index') }}" class="btn-secondary">取消</a>
+    </div>
+
+  </form>
+</div>
+{% endblock %}

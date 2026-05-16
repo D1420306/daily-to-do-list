@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}每日代辦事項{% endblock %}</title>
+  <meta name="description" content="簡潔高效的每日代辦事項管理工具，支援高中低優先順序標籤">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="{{ url_for('tasks.index') }}" class="navbar-brand">📋 每日代辦</a>
+    <a href="{{ url_for('tasks.new_task') }}" class="nav-btn">＋ 新增任務</a>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container">
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-wrap">
+          {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+</body>
+</html>
